@@ -1,22 +1,41 @@
 {
+  // compilerOptions 编译选项
   "compilerOptions": {
+    // ts->js 目标代码
+    // 因为项目中配置了babel，所以最终还是以Babel转换为准
     "target": "esnext",
+    // 目标代码使用的模块方案
     "module": "esnext",
     "strict": true,
+    // 对jsx做什么转换，preserve保留表示不转换
     "jsx": "preserve",
+    // 辅助导入功能
     "importHelpers": true,
+    // 按照node的方式去解析模块
     "moduleResolution": "node",
+    // 跳过一些库的类型检测（第三方库，axios/lodash...）
+    // 因为第三方库中可能有相同的类
+    // 跳过检测，当我们需要某种类时再从对应的库中导入即可
     "skipLibCheck": true,
+    // 下面两个表示允许es module和 commonjs 混合
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    // 生成映射文件（ts->js）
     "sourceMap": true,
+    // 文件路径在解析时，基本url
     "baseUrl": ".",
+    // 指定具体要解析使用的类型
     "types": ["webpack-env"],
+    // 路径解析（类似与webpack alias）
+    // 项目中因为配置了webpack，所以以webpack的配置为准
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "components/*": ["components/*"]
     },
+    // 可以指定在项目中可以使用那些库的类型
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
+  // 那些文件需要对ts进行解析
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -24,5 +43,7 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
+  // 不需要解析的文件
+  // 因为在include中的文件中可能引用了第三方库
   "exclude": ["node_modules"]
 }

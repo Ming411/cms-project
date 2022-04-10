@@ -38,7 +38,7 @@ class HYRequest {
             background: 'rgba(0, 0, 0, 0.7)'
           })
         }
-        console.log('全局拦截器')
+        // console.log('全局拦截器')
         return config
       },
       (err) => {
@@ -50,7 +50,7 @@ class HYRequest {
         this.loading?.close()
         const data = res.data
         if (data.returnCode === '-1001') {
-          console.log('返回成功，请求失败')
+          // console.log('返回成功，请求失败')
         } else {
           return data
         }
@@ -58,7 +58,7 @@ class HYRequest {
       (err) => {
         this.loading?.close()
         if (err.response.status === 404) {
-          console.log('404的错误')
+          // console.log('404的错误')
         }
         return err
       }

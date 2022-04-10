@@ -1,15 +1,16 @@
 import HYRequest from './request'
 import { BASE_URL, TIME_OUT } from './request/config'
+import localCache from '@/utils/cache'
 const hyRequest = new HYRequest({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptors: (config: any) => {
-      const token = ''
+      const token = localCache.getCache('token') ?? ''
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`
       }
-      console.log('每个实例的拦截器')
+      // console.log('每个实例的拦截器')
       return config
     },
     requestInterceptorsCatch: (err) => {

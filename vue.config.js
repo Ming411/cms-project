@@ -6,6 +6,17 @@ module.exports = {
   outputDir: './build',
   // 本地预览打包文件使用./，服务端使用 / 默认即可
   // publicPath: './',
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://152.136.185.210:5000',
+        pathRewrite: {
+          '^/api': ''
+        },
+        changeOrigin: true
+      }
+    }
+  },
   //   配置一
   configureWebpack: {
     //  configureWebpack这种配置最终会和webpack中的配置进行一个合并
