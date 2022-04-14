@@ -47,7 +47,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       const userInfoResult = await requestUserInfoById(id)
       const userInfo = userInfoResult.data
       commit('changeUserInfo', userInfo)
-      localCache.setCache('userinfo', userInfo)
+      localCache.setCache('userInfo', userInfo)
       // 请求用户对应的菜单
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
       const userMenus = userMenusResult.data
