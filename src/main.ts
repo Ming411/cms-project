@@ -31,6 +31,8 @@ Object.keys(Elicons).forEach((key) => {
 // app.use(ElementPlus)
 app.use(store)
 app.use(router)
+
+// 每次刷新后重新给vuex中存入数据
 setupStore()
 app.mount('#app')
 // console.log(process.env.VUE_APP_BASE_URL)
