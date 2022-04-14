@@ -28,12 +28,13 @@ Object.keys(Elicons).forEach((key) => {
 // globalRegister(app)
 // app.use(globalRegister) // 默认给globalRegister传递app参数
 
+// 每次刷新后重新给vuex中存入数据
+setupStore()
+
 // app.use(ElementPlus)
 app.use(store)
 app.use(router)
 
-// 每次刷新后重新给vuex中存入数据
-setupStore()
 app.mount('#app')
 // console.log(process.env.VUE_APP_BASE_URL)
 

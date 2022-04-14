@@ -10,14 +10,17 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/login/login.vue')
+    component: () => import('@/views/login/login.vue')
   },
   {
     path: '/main',
     name: 'main',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/main/main.vue')
+    component: () => import('@/views/main/main.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: import('@/views/not-found/not-found.vue')
   }
 ]
 

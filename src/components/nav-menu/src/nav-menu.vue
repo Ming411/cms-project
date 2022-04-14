@@ -1,14 +1,25 @@
 <template>
   <div class="nav-menu">
-    <div class="logo">
+    <div
+      class="logo"
+      :style="{ 'justify-content': !collapse ? 'flex-start' : 'center' }"
+    >
       <img class="img" src="~@/assets/img/logo.svg" alt="" />
-      <span class="title">Vue3+TS</span>
+      <span v-show="!collapse" class="title">Vue3+TS</span>
     </div>
-    <el-menu default-active="2" class="el-menu-vertical-demo">
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      background-color="#0c2135"
+      text-color="#b7bdc3"
+      active-text-color="#0a60bd"
+      :unique-opened="false"
+      :collapse="collapse"
+    >
       <template v-for="item in userMenus" :key="item.id">
         <!-- 有两级的菜单 -->
         <template v-if="item.type === 1">
-          <el-sub-menu>
+          <el-sub-menu :index="item.id + ''">
             <template #title>
               <component
                 v-if="item.icon"
@@ -24,7 +35,10 @@
             >
             <template v-for="subitem in item.children" :key="subitem.id">
               <!-- 子菜单 -->
-              <el-menu-item>
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleMenuItemClick(subitem)"
+              >
                 <component
                   v-if="subitem.icon"
                   :is="
@@ -44,7 +58,10 @@
         </template>
         <!-- 只有一层的情况 -->
         <template v-else-if="item.type === 2">
-          <el-menu-item>
+          <el-menu-item
+            :index="item.id + ''"
+            @click="handleMenuItemClick(item)"
+          >
             <component
               v-if="item.icon"
               :is="item.icon.slice(8, 9).toUpperCase() + item.icon.slice(9)"
@@ -67,12 +84,28 @@
 import { defineComponent, computed } from 'vue'
 // import { useStore } from 'vuex'
 import { useStore } from '@/store'
+// 使用router的方法二者皆可
+// import router from '@/router/index'
+import { useRouter } from 'vue-router'
 export default defineComponent({
+  props: {
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const userMenus = computed(() => store.state.login.userMenus)
-    console.log(store.state.login.userMenus)
-    return { userMenus }
+    // console.log(store.state.login.userMenus)
+
+    const handleMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
+    return { userMenus, handleMenuItemClick }
   }
 })
 </script>
@@ -116,7 +149,10 @@ export default defineComponent({
     }
   }
 
-  ::v-deep .el-submenu__title {
+  // ::v-deep .el-submenu__title {
+  //   background-color: #001529 !important;
+  // }
+  :deep(.el-submenu__title) {
     background-color: #001529 !important;
   }
 

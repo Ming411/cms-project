@@ -9,6 +9,7 @@ import { ILoginState } from './types'
 import type { IRootState } from '../types'
 import localCache from '@/utils/cache'
 import router from '@/router/index'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 const loginModule: Module<ILoginState, IRootState> = {
   // 需要传递两个泛型，第一个为子模块state的类型，第二个为根模块state的类型
   namespaced: true,
@@ -26,6 +27,13 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+      // userMenus ==> routes
+      const routes = mapMenusToRoutes(state.userMenus)
+      // 拿到和用户对应的路由模块
+      routes.forEach((route) => {
+        // 将路由添加到main中
+        router.addRoute('main', route.default)
+      })
     }
   },
   actions: {
