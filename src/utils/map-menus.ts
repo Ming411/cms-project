@@ -1,4 +1,8 @@
+import { IBreadcrumb } from '@/base-ui/breadcrumb'
 import type { RouteRecordRaw } from 'vue-router'
+
+let firstMenu: any = null
+
 export function mapMenusToRoutes(userMenus: any[]): any[] {
   const routes: RouteRecordRaw[] = []
   // 1. 先去加载默认的所有routes
@@ -23,6 +27,10 @@ export function mapMenusToRoutes(userMenus: any[]): any[] {
           return route.default.path === menu.url
         })
         if (route) routes.push(route)
+        if (!firstMenu) {
+          // 当从首页进来直接保存第一个菜单来显示
+          firstMenu = menu
+        }
       } else {
         _recurseGetRoute(menu.children)
       }
@@ -30,4 +38,38 @@ export function mapMenusToRoutes(userMenus: any[]): any[] {
   }
   _recurseGetRoute(userMenus)
   return routes
+}
+export { firstMenu }
+// 通过路由地址取到menu
+export function pathMapToMenu(userMenus: any[], currentPath: string): any {
+  // currentPath 从首页来的时候时main匹配不的
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+}
+
+// 面包屑跳转
+export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): any {
+  const breadCrumbs: IBreadcrumb[] = []
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        breadCrumbs.push({ name: menu.name, path: menu.url })
+        breadCrumbs.push({ name: findMenu.name, path: findMenu.url })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      // 只存在一级菜单的时候就不显示面包屑
+      return menu
+    }
+  }
+  return breadCrumbs
 }

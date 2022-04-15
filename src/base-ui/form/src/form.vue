@@ -1,10 +1,11 @@
 <template>
   <div>
-    <el-form label-width="100px">
+    <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
-          <el-col :span="8">
-            <el-form-item :label="item.label">
+          <!-- <el-col :span="8"> -->
+          <el-col v-bind="colLayout">
+            <el-form-item :label="item.label" :style="itemStyle">
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -42,6 +43,26 @@ export default defineComponent({
       type: Array as PropType<IFormItem[]>,
       // vue3中默认值必须以函数的方式来写
       default: () => []
+    },
+    labelWidth: {
+      type: String,
+      default: '100px'
+    },
+    itemStyle: {
+      type: Object,
+      default: () => ({
+        padding: '10px 40px'
+      })
+    },
+    colLayout: {
+      type: Object,
+      default: () => ({
+        xl: 6,
+        lg: 8,
+        md: 12,
+        sm: 24,
+        xs: 25
+      })
     }
   },
   setup() {

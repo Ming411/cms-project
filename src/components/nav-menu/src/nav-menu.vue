@@ -8,7 +8,7 @@
       <span v-show="!collapse" class="title">Vue3+TS</span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical-demo"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -81,12 +81,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 // import { useStore } from 'vuex'
 import { useStore } from '@/store'
 // 使用router的方法二者皆可
 // import router from '@/router/index'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menus'
 export default defineComponent({
   props: {
     collapse: {
@@ -97,15 +98,22 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const router = useRouter()
+    const route = useRoute()
+    // 拿路径，匹配菜单，显示左侧的高亮
+    const currentPath = route.path
     const userMenus = computed(() => store.state.login.userMenus)
-    // console.log(store.state.login.userMenus)
 
+    // computed格式的数据取值也是通过value属性
+    const menu = pathMapToMenu(userMenus.value, currentPath)
+    // currentPath 从首页来的时候时main匹配不的,所以要判断一下是否存在
+    // const defaultValue = ref(menu ? menu.id : '2' + '')
+    const defaultValue = ref(menu.id + '')
     const handleMenuItemClick = (item: any) => {
       router.push({
         path: item.url ?? '/not-found'
       })
     }
-    return { userMenus, handleMenuItemClick }
+    return { userMenus, handleMenuItemClick, defaultValue }
   }
 })
 </script>
