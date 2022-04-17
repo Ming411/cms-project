@@ -41,7 +41,7 @@ export function mapMenusToRoutes(userMenus: any[]): any[] {
 }
 export { firstMenu }
 // 通过路由地址取到menu
-export function pathMapToMenu(userMenus: any[], currentPath: string): any {
+/* export function pathMapToMenu(userMenus: any[], currentPath: string): any {
   // currentPath 从首页来的时候时main匹配不的
   for (const menu of userMenus) {
     if (menu.type === 1) {
@@ -53,10 +53,10 @@ export function pathMapToMenu(userMenus: any[], currentPath: string): any {
       return menu
     }
   }
-}
+} */
 
 // 面包屑跳转
-export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): any {
+/* export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): any {
   const breadCrumbs: IBreadcrumb[] = []
   for (const menu of userMenus) {
     if (menu.type === 1) {
@@ -64,7 +64,6 @@ export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): any {
       if (findMenu) {
         breadCrumbs.push({ name: menu.name, path: menu.url })
         breadCrumbs.push({ name: findMenu.name, path: findMenu.url })
-        return findMenu
       }
     } else if (menu.type === 2 && menu.url === currentPath) {
       // 只存在一级菜单的时候就不显示面包屑
@@ -72,4 +71,31 @@ export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): any {
     }
   }
   return breadCrumbs
+} */
+
+// 抽取上面两个方法的代码
+export function pathMapBreadcrumbs(userMenus: any[], currentPath: string) {
+  const breadCrumbs: IBreadcrumb[] = []
+  pathMapToMenu(userMenus, currentPath, breadCrumbs)
+  return breadCrumbs
+}
+
+export function pathMapToMenu(
+  userMenus: any[],
+  currentPath: string,
+  breadCrumbs?: any[]
+): any {
+  // currentPath 从首页来的时候时main匹配不的
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        breadCrumbs?.push({ name: menu.name })
+        breadCrumbs?.push({ name: findMenu.name })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
 }

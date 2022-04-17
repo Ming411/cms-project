@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="header">
+      <slot name="header"></slot>
+    </div>
     <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
@@ -9,10 +12,18 @@
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
-                <el-input type="item.type" :placeholder="item.placeholder" />
+                <el-input
+                  type="item.type"
+                  :placeholder="item.placeholder"
+                  v-model="formData[`${item.field}`]"
+                />
               </template>
               <template v-else-if="item.type === 'select'">
-                <el-select style="width: 100%" :placeholder="item.placeholder">
+                <el-select
+                  style="width: 100%"
+                  :placeholder="item.placeholder"
+                  v-model="formData[`${item.field}`]"
+                >
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
@@ -23,7 +34,11 @@
               </template>
               <template v-else-if="item.type === 'datepicker'">
                 <!-- v-bind表示将otherOptions中的所有属性都绑定到组件上 -->
-                <el-date-picker style="width: 100%" v-bind="item.otherOptions">
+                <el-date-picker
+                  style="width: 100%"
+                  v-bind="item.otherOptions"
+                  v-model="formData[`${item.field}`]"
+                >
                 </el-date-picker>
               </template>
             </el-form-item>
@@ -31,14 +46,21 @@
         </template>
       </el-row>
     </el-form>
+    <div class="footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import type { IFormItem } from '../types'
 export default defineComponent({
   props: {
+    modelValue: {
+      type: Object,
+      required: true
+    },
     formItems: {
       type: Array as PropType<IFormItem[]>,
       // vue3中默认值必须以函数的方式来写
@@ -65,8 +87,20 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {}
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    // 不直接使用修改传递过来的值，生成一个假的formData
+    const formData = ref({ ...props.modelValue })
+    watch(
+      formData,
+      (newValue) => {
+        emit('update:modelValue', newValue)
+      },
+      {
+        deep: true
+      }
+    )
+    return { formData }
   }
 })
 </script>

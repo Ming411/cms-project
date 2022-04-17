@@ -24,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import userInfo from './user-info.vue'
-import HyBreadcumb, { IBreadcrumb } from '@/base-ui/breadcrumb'
+import HyBreadcumb from '@/base-ui/breadcrumb'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { pathMapBreadcrumbs } from '@/utils/map-menus'
@@ -39,11 +39,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore()
-    const menus = store.state.login.userMenus
     const route = useRoute()
-    const path = route.path
-    const akko = pathMapBreadcrumbs(menus, path)
-
     const isFold = ref(false)
     const handleFoldClick = () => {
       isFold.value = !isFold.value
@@ -51,7 +47,12 @@ export default defineComponent({
       emit('foldChange', isFold.value)
     }
     // 面包屑的数据
-    const breadcrumbs: IBreadcrumb[] = akko
+    const breadcrumbs = computed(() => {
+      // 必须要放到计算属性中，不然不具有响应式
+      const menus = store.state.login.userMenus
+      const path = route.path
+      return pathMapBreadcrumbs(menus, path)
+    })
     return {
       isFold,
       handleFoldClick,
@@ -65,6 +66,7 @@ export default defineComponent({
 .nav-header {
   display: flex;
   width: 100%;
+  align-items: center;
   .fold-menu {
     cursor: pointer;
   }

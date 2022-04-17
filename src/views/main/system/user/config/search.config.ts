@@ -2,22 +2,32 @@ import type { IForm } from '@/base-ui/form'
 const formConfig: IForm = {
   formItems: [
     {
+      field: 'id',
       type: 'input',
-      label: '用户名1',
+      label: 'id',
       rules: [],
-      placeholder: '请输入1'
+      placeholder: '请输入id'
     },
     {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      rules: [],
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'password',
       type: 'password',
-      label: '用户名2',
+      label: '密码',
       rules: [],
-      placeholder: '请输入2'
+      placeholder: '请输入密码'
     },
     {
+      field: 'sport',
       type: 'select',
-      label: '用户名3',
+      label: '喜欢的运动',
       rules: [],
-      placeholder: '请输入3',
+      placeholder: '请输入喜欢的运动',
       options: [
         {
           title: '篮球',
@@ -30,12 +40,13 @@ const formConfig: IForm = {
       ]
     },
     {
+      field: 'createTime',
       type: 'datepicker',
-      label: '用户名4',
+      label: '创建时间',
       rules: [],
       otherOptions: {
-        'start-placeholder': '开始的时间',
-        'end-placeholder': '结束的时间',
+        'start-placeholder': '开始时间',
+        'end-placeholder': '结束时间',
         type: 'datetimerange'
       }
     }
