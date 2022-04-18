@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, watch, ref } from 'vue'
 import type { IFormItem } from '../types'
 export default defineComponent({
   props: {
@@ -91,6 +91,7 @@ export default defineComponent({
   setup(props, { emit }) {
     // 不直接使用修改传递过来的值，生成一个假的formData
     const formData = ref({ ...props.modelValue })
+
     watch(
       formData,
       (newValue) => {
