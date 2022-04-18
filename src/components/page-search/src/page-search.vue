@@ -38,11 +38,11 @@ export default defineComponent({
 
     // 按钮重置操作
     const handleResetClick = () => {
-      // formData.value = formOriginData
-      for (const key in formOriginData) {
-        // 不可以直接对他进行赋值操作，直接进行赋值操作会导致子组件中得浅拷贝引用对象失效
-        formData.value[`${key}`] = formOriginData[key]
-      }
+      formData.value = formOriginData
+      // for (const key in formOriginData) {
+      //   // 不可以直接对他进行赋值操作，直接进行赋值操作会导致子组件中得浅拷贝引用对象失效
+      //   formData.value[`${key}`] = formOriginData[key]
+      // }
     }
     return {
       formData,
