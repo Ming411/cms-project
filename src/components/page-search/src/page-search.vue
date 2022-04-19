@@ -8,7 +8,9 @@
       <template #footer>
         <div class="handle-btns">
           <el-button icon="refresh" @click="handleResetClick">重置</el-button>
-          <el-button type="primary" icon="search">搜索</el-button>
+          <el-button type="primary" icon="search" @click="handleQueryClick"
+            >搜索</el-button
+          >
         </div>
       </template>
     </hy-form>
@@ -28,7 +30,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(props, { emit }) {
     const formItems = props.searchFormConfig?.formItems ?? []
     const formOriginData: any = {}
     for (const item of formItems) {
@@ -39,14 +42,20 @@ export default defineComponent({
     // 按钮重置操作
     const handleResetClick = () => {
       formData.value = formOriginData
+      emit('resetBtnClick')
       // for (const key in formOriginData) {
       //   // 不可以直接对他进行赋值操作，直接进行赋值操作会导致子组件中得浅拷贝引用对象失效
       //   formData.value[`${key}`] = formOriginData[key]
       // }
     }
+    // 搜索按钮
+    const handleQueryClick = () => {
+      emit('queryBtnClick', formData.value)
+    }
     return {
       formData,
-      handleResetClick
+      handleResetClick,
+      handleQueryClick
     }
   }
 })

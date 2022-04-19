@@ -15,6 +15,7 @@ import 'element-plus/theme-chalk/el-loading.css'
 import 'element-plus/theme-chalk/el-message.css'
 // 国际化
 import ElementPlus from 'element-plus'
+
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { setupStore } from '@/store/index'
 // 导入封装好的请求类
@@ -31,7 +32,6 @@ app.use(ElementPlus, {
 Object.keys(Elicons).forEach((key) => {
   app.component(key, Elicons[key as keyof typeof Elicons])
 })
-
 // 以下两种方式效果等同
 // globalRegister(app)
 app.use(globalRegister) // 默认给globalRegister传递app参数

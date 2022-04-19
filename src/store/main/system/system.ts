@@ -5,35 +5,54 @@ import { getPageListData } from '@/service/main/system/system'
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state: {
-    userList: [],
-    userCount: 0,
+    usersList: [],
+    usersCount: 0,
     roleList: [],
-    roleCount: 0
+    roleCount: 0,
+    goodsList: [],
+    goodsCount: 0,
+    menuList: [],
+    menuCount: 0
   },
   mutations: {
-    changeUserList(state, userList: any[]) {
-      state.userList = userList
+    // 用户管理
+    changeUsersList(state, userList: any[]) {
+      state.usersList = userList
     },
-    changeUserCount(state, userCount: number) {
-      state.userCount = userCount
+    changeUsersCount(state, userCount: number) {
+      state.usersCount = userCount
     },
+    // 角色管理
     changeRoleList(state, list: any[]) {
       state.roleList = list
     },
     changeRoleCount(state, count: number) {
       state.roleCount = count
+    },
+    // 商品信息
+    changeGoodsList(state, list: any[]) {
+      state.goodsList = list
+    },
+    changeGoodsCount(state, count: number) {
+      state.goodsCount = count
+    },
+    // 菜单列表
+    changeMenuList(state, list: any[]) {
+      state.menuList = list
+    },
+    changeMenuCount(state, count: number) {
+      state.menuCount = count
     }
   },
   getters: {
     pageListData: (state) => {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`]
-        // switch (pageName) {
-        //   case 'user':
-        //     return state.userList
-        //   case 'role':
-        //     return state.roleList
-        // }
+      }
+    },
+    pageListCount: (state) => {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
       }
     }
   },
@@ -43,15 +62,8 @@ const systemModule: Module<ISystemState, IRootState> = {
 
       // 获取pageurl
       const pageName = payload.pageName
-      let pageUrl = ''
-      switch (pageName) {
-        case 'user':
-          pageUrl = '/users/list'
-          break
-        case 'role':
-          pageUrl = '/role/list'
-          break
-      }
+      const pageUrl = `/${pageName}/list`
+
       // 对页面发起请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       // 将数据存储到state中

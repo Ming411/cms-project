@@ -48,16 +48,19 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 }
-
-.main-content,
-.page {
+.main-content {
   height: 100%;
 }
+
+// .main-content,
+// .page {
+//   height: 100%;
+// }
 
 .page-content {
   height: calc(100% - 48px);
   .page-info {
-    height: 100%;
+    // height: 100%;
     border-radius: 5px;
     background-color: #fff;
   }
