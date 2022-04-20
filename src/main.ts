@@ -24,6 +24,7 @@ import { setupStore } from '@/store/index'
 const app = createApp(App)
 
 // 将其默认语言改成中文
+
 app.use(ElementPlus, {
   locale: zhCn
 })

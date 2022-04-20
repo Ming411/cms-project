@@ -8,7 +8,11 @@
         <template v-for="item in formItems" :key="item.label">
           <!-- <el-col :span="8"> -->
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :style="itemStyle">
+            <el-form-item
+              v-if="!item.isHidden"
+              :label="item.label"
+              :style="itemStyle"
+            >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -18,7 +22,7 @@
                   v-model="formData[`${item.field}`]"
                 /> -->
                 <el-input
-                  type="item.type"
+                  :type="item.type"
                   :placeholder="item.placeholder"
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"

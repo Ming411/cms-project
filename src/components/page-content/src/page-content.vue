@@ -8,7 +8,11 @@
     >
       <!-- header中的插槽 -->
       <template #handerHandler>
-        <el-button type="success" icon="Plus" v-if="isCreate"
+        <el-button
+          type="success"
+          icon="Plus"
+          v-if="isCreate"
+          @click="handleNewClick"
           >新建用户</el-button
         >
       </template>
@@ -25,12 +29,22 @@
       <template #updateAt="scope">
         <strong>{{ $filters.formatTime(scope.row.updateAt) }}</strong>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handler_btns">
-          <el-button icon="edit" size="small" type="text" v-if="isUpdate"
+          <el-button
+            icon="edit"
+            size="small"
+            type="text"
+            v-if="isUpdate"
+            @click="handleEditClick(scope.row)"
             >编辑</el-button
           >
-          <el-button icon="delete" size="small" type="text" v-if="isDelete"
+          <el-button
+            icon="delete"
+            size="small"
+            type="text"
+            v-if="isDelete"
+            @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
         </div>
@@ -69,7 +83,8 @@ export default defineComponent({
   components: {
     HyTable
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
     // 获取操作的权限
     const isCreate = usePermission(props.pageName, 'create')
@@ -116,6 +131,21 @@ export default defineComponent({
         return true
       }
     )
+    // 删除按钮逻辑
+    const handleDeleteClick = (item: any) => {
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+    // 新建用户
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+    // 编辑按钮
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item)
+    }
     return {
       DataList,
       getPageData,
@@ -124,7 +154,10 @@ export default defineComponent({
       otherPropSlots,
       isDelete,
       isUpdate,
-      isCreate
+      isCreate,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     }
   }
 })
