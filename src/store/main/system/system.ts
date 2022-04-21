@@ -1,7 +1,12 @@
 import { IRootState } from '@/store/types'
 import { Module } from 'vuex'
 import { ISystemState } from './types'
-import { getPageListData, deletePageData } from '@/service/main/system/system'
+import {
+  getPageListData,
+  deletePageData,
+  createPageData,
+  editPageData
+} from '@/service/main/system/system'
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state: {
@@ -81,6 +86,34 @@ const systemModule: Module<ISystemState, IRootState> = {
       const pageUrl = `/${pageName}/${id}`
       // 调用删除
       await deletePageData(pageUrl)
+      // 重新请求最新数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    // 新建用户
+    async createPageDataAction({ dispatch }, payload: any) {
+      const { pageName, newData } = payload
+      const pageUrl = `/${pageName}`
+      await createPageData(pageUrl, newData)
+      // 重新请求最新数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    // 编辑用户(需要额外传入ID)
+    async editPageDataAction({ dispatch }, payload: any) {
+      const { pageName, editData, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      await editPageData(pageUrl, editData)
       // 重新请求最新数据
       dispatch('getPageListAction', {
         pageName,

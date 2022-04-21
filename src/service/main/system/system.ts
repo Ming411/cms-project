@@ -13,3 +13,19 @@ export function deletePageData(url: string) {
     url: url
   })
 }
+
+// 新增用户接口
+export function createPageData(url: string, newData: any) {
+  return hyRequest.post<IDataType>({
+    url,
+    data: newData
+  })
+}
+
+// 编辑用户
+export function editPageData(url: string, editwData: any) {
+  return hyRequest.patch<IDataType>({
+    url,
+    data: editwData
+  })
+}

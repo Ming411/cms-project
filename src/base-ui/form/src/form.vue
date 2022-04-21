@@ -74,8 +74,8 @@ export default defineComponent({
       required: true
     },
     formItems: {
+      // 有哪些选择框的配置
       type: Array as PropType<IFormItem[]>,
-      // vue3中默认值必须以函数的方式来写
       default: () => []
     },
     labelWidth: {
@@ -115,6 +115,7 @@ export default defineComponent({
     // )
 
     const handleValueChange = (value: any, field: string) => {
+      // 数据更新时更新外部数据
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
     return {

@@ -7,6 +7,7 @@ export interface IRootState {
   age: number
   entireDepartment: any[]
   entireRole: any[]
+  entireMenu: any[]
 }
 
 // 导出子模块的state类型

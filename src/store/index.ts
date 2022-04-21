@@ -10,7 +10,8 @@ const store = createStore<IRootState>({
     age: 18,
     // 全部部门和全部角色
     entireDepartment: [],
-    entireRole: []
+    entireRole: [],
+    entireMenu: []
   },
   mutations: {
     changeEntireDepartment(state, list) {
@@ -18,6 +19,9 @@ const store = createStore<IRootState>({
     },
     changeEntireRole(state, list) {
       state.entireRole = list
+    },
+    changeEntireMenu(state, list) {
+      state.entireMenu = list
     }
   },
   actions: {
@@ -33,9 +37,14 @@ const store = createStore<IRootState>({
         size: 1000
       })
       const { list: roleList } = roleResult.data
+
+      // 所有的菜单列表
+      const menuResult = await getPageListData('/menu/list', {})
+      const { list: menuList } = menuResult.data
       // 保存数据
       commit('changeEntireDepartment', departmentList)
       commit('changeEntireRole', roleList)
+      commit('changeEntireMenu', menuList)
     }
   },
   modules: {
@@ -47,7 +56,7 @@ const store = createStore<IRootState>({
 export function setupStore() {
   // 初始化store,预防网页刷新后vuex中数据丢失
   store.dispatch('login/loadLocalLogin')
-  store.dispatch('getInitialDataAction')
+  // store.dispatch('getInitialDataAction')
 }
 
 // 解决vuex本身类型为any的隐患
