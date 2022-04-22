@@ -1,6 +1,7 @@
 // 专门用于存放自定义的接口
 import { ILoginState } from './login/types'
 import { ISystemState } from './main/system/types'
+import { IDashBoardState } from './main/analysis/types'
 
 export interface IRootState {
   name: string
@@ -14,6 +15,7 @@ export interface IRootState {
 export interface IRootWidthModule {
   login: ILoginState
   system: ISystemState
+  dashboard: IDashBoardState
 }
 
 // 合并二者的类型/合并
