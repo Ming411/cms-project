@@ -1,5 +1,5 @@
 import * as echarts from 'echarts'
-
+import ResizeObserver from 'resize-observer-polyfill'
 // json需要声明一下，默认是不识别的
 import ChinaMapData from '../data/china.json'
 echarts.registerMap('china', ChinaMapData)
